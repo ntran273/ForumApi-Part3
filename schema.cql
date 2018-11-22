@@ -62,11 +62,11 @@ insert into forums (forum_name, username, forum_id) values ('flask', 'bob', '00f
 
 insert into users (username, password, user_id) values ('holly', 'password', '45847660-c154-4b29-b7aa-6c02c44c7850');
 insert into users (username, password, user_id) values ('nguyen', 'password', '8136d793-ecde-4adf-ad18-dcb87b6c94ba');
-insert into users (username, password, user_id) values ('bob', 'password', 5d886db9-e9b4-4709-921e-71fe0a2a1948);
-insert into users (username, password, user_id) values ('alice', 'password', c9cedf3f-aca0-4aa1-8829-ac04c1543e44);
-insert into users (username, password, user_id) values ('bob', 'password', 3242a193-ce2b-46c8-a1fd-dd9000c37461);
-insert into users (username, password, user_id) values ('charlie', 'password', 00b38632-91ca-41b2-8a09-01f585b4c3d1);
+insert into users (username, password, user_id) values ('bob', 'password', '5d886db9-e9b4-4709-921e-71fe0a2a1948');
+insert into users (username, password, user_id) values ('alice', 'password', 'c9cedf3f-aca0-4aa1-8829-ac04c1543e44');
+insert into users (username, password, user_id) values ('bob', 'password', '3242a193-ce2b-46c8-a1fd-dd9000c37461');
+insert into users (username, password, user_id) values ('charlie', 'password', '00b38632-91ca-41b2-8a09-01f585b4c3d1');
 
 insert into posts (username, post_text, post_time, forum_id, thread_id, post_id) values ('charlie', 'Why should I use Redis over other databases?', '2017-04-01T11:21:59.001+0000', '00fe6541-203c-4a78-b5b7-fa44006f9110' , '7f308475-f1e4-46b4-8914-df347d6884ef', '6978d64a-c481-420b-8b49-96d8c8f4f050');
-insert into posts (username, post_text, post_time, forum_id, thread_id, post_id) values ('bob', It is a key-value database that has very quick access ability', '2017-06-01T11:21:59.001+0000', '00fe6541-203c-4a78-b5b7-fa44006f9110', '7f308475-f1e4-46b4-8914-df347d6884ef', '08601c12-b2a6-4c44-a9a6-49677596ee92');
-insert into posts (username, post_text, post_time, forum_id, thread_id, post_id) values ('charlie', When is a good time for me to use Redis?', '2017-08-01T11:21:59.001+0000', 'a8b18bea-02cd-40be-a97a-54926db8c75c', '417ef8c4-0bb1-450c-8bbb-e49b7656cbec', 'f58edf43-a6d6-4a88-9cea-a2714813364c');
+insert into posts (username, post_text, post_time, forum_id, thread_id, post_id) values ('bob', 'It is a key-value database that has very quick access ability', '2017-06-01T11:21:59.001+0000', '00fe6541-203c-4a78-b5b7-fa44006f9110', '7f308475-f1e4-46b4-8914-df347d6884ef', '08601c12-b2a6-4c44-a9a6-49677596ee92');
+insert into posts (username, post_text, post_time, forum_id, thread_id, post_id) values ('charlie', 'When is a good time for me to use Redis?', '2017-08-01T11:21:59.001+0000', 'a8b18bea-02cd-40be-a97a-54926db8c75c', '417ef8c4-0bb1-450c-8bbb-e49b7656cbec', 'f58edf43-a6d6-4a88-9cea-a2714813364c');
