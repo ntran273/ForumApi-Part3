@@ -1,5 +1,6 @@
 import flask
-from flask import request, jsonify, render_template, json, abort, Response, flash, g, current_app, make_response
+import uuid
+from flask import Flask,request, _app_ctx_stack, session, jsonify, render_template, json, abort, Response, flash, g, current_app, make_response
 from flask_basicauth import BasicAuth
 from flask.cli import AppGroup
 from cassandra.cluster import Cluster
@@ -46,7 +47,7 @@ def get_db():
 
 @app.teardown_appcontext
 def close_connection(exception):
-     ctx = stack.top
+     ctx = _app_ctx_stack.top
      if hasattr(ctx, 'cassandra_cluster'):
         ctx.cassandra_cluster.shutdown()
 
