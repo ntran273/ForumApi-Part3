@@ -9,8 +9,8 @@ sudo apt-get install python-virtualenv
 sudo apt-get install python-pip
 virtualenv flask-env
 source flask-env/bin/activate
-pip install Flask
-pip install Flask-BasicAuth
+pip3 install Flask
+pip3 install Flask-BasicAuth
 sudo apt install --yes python3-cassandra
 pip3 install flask-cassandra
 ```
