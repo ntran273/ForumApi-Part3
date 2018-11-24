@@ -1,5 +1,6 @@
-CREATE KEYSPACE forum_api
-WITH replication = {'class':'SimpleStrategy','replication_factor' : 3};
+DROP KEYSPACE IF EXISTS forum_api;
+
+CREATE KEYSPACE forum_api WITH replication = {'class':'SimpleStrategy','replication_factor' : 3};
 
 USE forum_api;
 DROP TABLE IF EXISTS USERS;
