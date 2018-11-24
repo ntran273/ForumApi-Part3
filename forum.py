@@ -8,6 +8,7 @@ from cassandra.query import dict_factory
 from flask_cassandra import CassandraCluster
 import click
 import sqlite3
+import os
 
 app = flask.Flask(__name__)
 cassandra = CassandraCluster()
@@ -53,19 +54,8 @@ def close_connection(exception):
 
 #Function  execute script
 def init_db():
-    db = cassandra.connect()
-    #Create Tables
-    db.execute('DROP KEYSPACE IF EXISTS forum_api')
-    db.execute('CREATE KEYSPACE forum_api WITH replication = {\'class\':\'SimpleStrategy\',\'replication_factor\' : 3}')
-    db.execute('USE forum_api')
-    db.execute('DROP TABLE IF EXISTS USERS')
-    db.execute('DROP TABLE IF EXISTS FORUMS')
-    db.execute('DROP TABLE IF EXISTS THREADS')
-    db.execute('DROP TABLE IF EXISTS POSTS')
-    db.execute('DROP INDEX IF EXISTS user_idx')
-    db.execute('CREATE TABLE IF NOT EXISTS USERS (username text, password text, user_id uuid, PRIMARY KEY (username, user_id))')
-    db.execute('CREATE TABLE IF NOT EXISTS FORUMS (forum_name text, username text, forum_id uuid, PRIMARY KEY (username, forum_id))')
-
+    os.system("docker exec -it scylla cqlsh -k forum_api -f schema.cql")
+    
 #Create Command initdb
 #To use command, run in terminal export FLASK_APP = appname, flask initdb
 @app.cli.command('init_db')
