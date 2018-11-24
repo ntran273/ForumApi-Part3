@@ -11,9 +11,9 @@ import sqlite3
 
 app = flask.Flask(__name__)
 cassandra = CassandraCluster()
-app.config['CASSANDRA_NODES'] = ['127.0.0.1']
-app.config['DEBUG'] = True
-CASSANDRA_NODES = '127.0.0.1'
+app.config['CASSANDRA_NODES'] = ['172.17.0.2']
+# app.config['DEBUG'] = True
+CASSANDRA_NODES = '127.17.0.2'
 DATABASE = 'forum_api'
 
 class Authentication(BasicAuth):
@@ -55,7 +55,7 @@ def close_connection(exception):
 def init_db():
     db = cassandra.connect()
     #Create Tables
-    db.execute('DROP KEYSPACE forum_api')
+    db.execute('DROP KEYSPACE IF EXISTS forum_api')
     db.execute('CREATE KEYSPACE forum_api WITH replication = {\'class\':\'SimpleStrategy\',\'replication_factor\' : 3}')
     db.execute('USE forum_api')
     db.execute('DROP TABLE IF EXISTS USERS')
