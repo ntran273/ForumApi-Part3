@@ -171,7 +171,7 @@ def api_forums():
 #List threads in the specified forum
 @app.route('/forums/<uuid:forum_id>', methods = ['GET'])
 def api_threads(forum_id):
-    query = 'SELECT forum_id FROM forums WHERE forum_id = a8b18bea-02cd-40be-a97a-54926db8c75c ALLOW FILTERING;'
+    query = 'SELECT forum_id FROM forum_api.forums WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
     forum = query_db(query)
     if not forum :
         error = '404 No forum exists with the forum id of ' + str(forum_id)
@@ -213,21 +213,22 @@ def post_forums():
     name = data['forum_name']
 
     creator = current_app.config['BASIC_AUTH_USERNAME']
-    query = 'SELECT forum_name FROM forums'
+    query = 'SELECT forum_name FROM forum_api.forums'
     forum_names = query_db(query)
     for forum_name in forum_names:
         if forum_name['forum_name'] == name:
             error = '409 A forum already exists with the name ' + name
             return make_response(jsonify({'error': error}), 409)
-
+    generateForumId = uuid.uuid4()
     db = get_db()
-    db.execute('insert into forums (forum_name, forum_creator) values (?, ?)',(name, creator))
-    db.commit()
+    db.execute("""insert into forum_api.forums (forum_name, username, forum_id) values (%s, %s, %s)""",(name, creator, generateForumId))
 
-    query = "select Id from forums where forum_name ='{}'".format(name)
-    new_forum = query_db(query)
+# query = 'SELECT forum_id FROM forum_api.forums WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
+
+    # query = "select forum_id from forum_api.forums where forum_name ='{}'".format(name)
+    # new_forum = query_db(query)
     response = make_response('Success: forum created')
-    response.headers['location'] = '/forums/{}'.format(new_forum[0]['Id'])
+    response.headers['location'] = '/forums/{}'.format(str(generateForumId))
     response.status_code = 201
 
     return response
