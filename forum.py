@@ -118,16 +118,16 @@ def create_user():
     data = request.get_json(force=True)
     username = data['username']
     password = data['password']
+    generateUserId = uuid.uuid4();
 
-    query = 'SELECT username FROM users'
+    query = 'SELECT username FROM forum_api.users;'
     listusername = query_db(query)
     for user_name in listusername:
         if user_name['username'] == username:
             error = '409 A username already exists'
             return make_response(jsonify({'error': error}), 409)
     db = get_db()
-    db.execute('insert into users(username, password) values (?,?)', (username,password))
-    db.commit()
+    db.execute("""insert into forum_api.users (username, password, user_id) values (%s, %s, %s)""",(username, password, generateUserId))
 
     response = make_response('Success: account created')
     response.status_code = 201
