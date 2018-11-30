@@ -38,6 +38,11 @@ GET threads
 curl localhost:5000/forums/a8b18bea-02cd-40be-a97a-54926db8c75c
 ```
 
+POST USER
+```
+curl -v -d '{"username": "dungho", "password": "whatisthat"}' -H "Content-Type: application/json" -X POST localhost:5000/users
+```
+
 POST FORUMS
 ```
 curl -v -u holly:password -d '{"forum_name":"HTML"}' -H "Content-Type: application/json" -X POST localhost:5000/forums
