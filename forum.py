@@ -178,7 +178,7 @@ def api_threads(forum_id):
         return make_response(jsonify({'error': error}), 404)
     else:
         timestamp = getTimeStamp('thread')
-        query2 = 'SELECT username, thread_title FROM forum_api.threads WHERE forum_id = a8b18bea-02cd-40be-a97a-54926db8c75c ALLOW FILTERING;'
+        query2 = 'SELECT thread_id, username as creator, thread_title as title FROM forum_api.threads WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
         threads = query_db(query2)
         return jsonify(threads)
 
