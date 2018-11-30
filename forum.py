@@ -254,17 +254,16 @@ def post_thread(forum_id):
     generateThreadId = uuid.uuid4()
 
     db = get_db()
-    db.execute("""insert into forum_api.threads (thread_title, username, forum_id, thread_id) values (%s, %s, %s)""",(name, creator, str(forum_id), generateThreadId))
+    db.execute("""insert into forum_api.threads (thread_title, username, forum_id, thread_id) values (%s, %s, %s)""",(text, creator, str(forum_id), generateThreadId))
 
     # db.execute('insert into threads (thread_title, thread_creator, forum_Id) values (?, ?, ?)',(title, creator, str(forum_id)))
-    # Get the thread_id from the new thread to put into post's thread_id
-    file_entry = query_db('SELECT last_insert_rowid()')
-    thread_id = file_entry[0]['last_insert_rowid()']
     # Insert text as a new post
-    db.execute('insert into posts (post_text, post_authorid , post_threadId, post_forumid) values (?, ?, ?, ?)',(text, creator, str(thread_id), str(forum_id)))
+    db.execute("""insert into forum_api.posts (post_text, username, forum_id, thread_id) values (%s, %s, %s, %s)""",(text, creator, str(forum_id), generateThreadId))
+
+    # db.execute('insert into posts (post_text, post_authorid , post_threadId, post_forumid) values (?, ?, ?, ?)',(text, creator, str(thread_id), str(forum_id)))
 
     response = make_response("Success: Thread and Post created")
-    response.headers['location'] = '/forums/{}/{}'.format(str(forum_id), thread_id)
+    response.headers['location'] = '/forums/{}/{}'.format(str(forum_id), generateThreadId)
     response.status_code = 201
     return response
 
