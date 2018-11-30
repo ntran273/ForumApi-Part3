@@ -55,7 +55,7 @@ def close_connection(exception):
 #Function  execute script
 def init_db():
     os.system("docker cp schema.cql scylla:/schema.cql")
-    os.system("docker exec -it scylla cqlsh -k forum_api -f schema.cql")
+    os.system("docker exec -it scylla cqlsh -f schema.cql")
 
 #Create Command initdb
 #To use command, run in terminal export FLASK_APP = appname, flask initdb

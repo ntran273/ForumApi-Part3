@@ -4,15 +4,16 @@ IN TUFFIX
 
 NEED TO INSTALL THESE THINGS
 ```
-cd ~
-sudo apt-get install python-virtualenv
 sudo apt-get install python-pip
-virtualenv flask-env
-source flask-env/bin/activate
 pip3 install Flask
 pip3 install Flask-BasicAuth
 sudo apt install --yes python3-cassandra
 pip3 install flask-cassandra
+```
+
+If you have already a container named "scylla" in Docker, run this command to delete it first.
+```
+docker rm -f scylla && docker rmi scylladb/scylla
 ```
 
 To Start a single instance of scyllaDB
@@ -23,7 +24,6 @@ docker run --name scylla -d scylladb/scylla --smp 1 --memory 1G --overprovisione
 To initialize the database doing the following:
 ```
 docker start scylla
-docker cp schema.cql scylla:/schema.cql
 export FLASK_APP=forum
 flask init_db
 ```
