@@ -40,7 +40,7 @@ basic_auth = Authentication(app)
 def get_db():
     top = _app_ctx_stack.top
     if not hasattr(top, 'cassandra_cluster'):
-        ctx = stack.top
+        ctx = top
         ctx.cassandra_cluster = cassandra.connect()
         ctx.cassandra_cluster.set_keyspace(DATABASE)
         ctx.cassandra_cluster.row_factory = dict_factory
@@ -54,8 +54,9 @@ def close_connection(exception):
 
 #Function  execute script
 def init_db():
+    os.system("docker cp schema.cql scylla:/schema.cql")
     os.system("docker exec -it scylla cqlsh -k forum_api -f schema.cql")
-    
+
 #Create Command initdb
 #To use command, run in terminal export FLASK_APP = appname, flask initdb
 @app.cli.command('init_db')
@@ -165,22 +166,19 @@ def change_password(user):
 def api_forums():
     query = "SELECT * FROM forums;"
     forums = query_db(query)
-
-    # all_forums = query_db('SELECT forums.Id, forums.forum_name, user.username FROM  forums INNER JOIN user ON forums.Id = user.Id ;')
     return jsonify(forums)
 
 #List threads in the specified forum
-@app.route('/forums/<int:forum_id>', methods = ['GET'])
+@app.route('/forums/<uuid:forum_id>', methods = ['GET'])
 def api_threads(forum_id):
-    query = 'SELECT Id FROM forums WHERE Id = ' + str(forum_id) +';'
+    query = 'SELECT forum_id FROM forums WHERE forum_id = %s' + str(forum_id) +';'
     forum = query_db(query)
     if not forum :
         error = '404 No forum exists with the forum id of ' + str(forum_id)
         return make_response(jsonify({'error': error}), 404)
     else:
-
         timestamp = getTimeStamp('thread')
-        query = 'SELECT Id, thread_creator as creator, {} as timestamp, thread_title as title FROM threads WHERE forum_id = {} ORDER BY thread_time DESC'.format(timestamp,str(forum_id))
+        query = 'SELECT thread_id as Id, username as creator, thread_title as title FROM threads WHERE forum_id = {}'
         threads = query_db(query)
         return jsonify(threads)
 

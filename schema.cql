@@ -3,10 +3,10 @@ DROP KEYSPACE IF EXISTS forum_api;
 CREATE KEYSPACE forum_api WITH replication = {'class':'SimpleStrategy','replication_factor' : 3};
 
 USE forum_api;
-DROP TABLE IF EXISTS USERS;
-DROP TABLE IF EXISTS FORUMS;
-DROP TABLE IF EXISTS THREADS;
-DROP TABLE IF EXISTS POSTS;
+DROP TABLE IF EXISTS forum_api.USERS;
+DROP TABLE IF EXISTS forum_api.FORUMS;
+DROP TABLE IF EXISTS forum_api.THREADS;
+DROP TABLE IF EXISTS forum_api.POSTS;
 DROP INDEX IF EXISTS user_idx;
 
 CREATE TABLE IF NOT EXISTS USERS(
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS THREADS(
   thread_time timestamp,
   forum_id uuid,
 
-  PRIMARY KEY ((username, thread_id), thread_time)
+  PRIMARY KEY (forum_id, thread_time)
 );
 
 CREATE TABLE IF NOT EXISTS POSTS(
