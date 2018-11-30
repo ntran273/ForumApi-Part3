@@ -178,7 +178,7 @@ def api_threads(forum_id):
         return make_response(jsonify({'error': error}), 404)
     else:
         timestamp = getTimeStamp('thread')
-        query2 = 'SELECT thread_id, username as creator, thread_title as title FROM forum_api.threads WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
+        query2 = 'SELECT thread_id, username as creator, thread_title as title, thread_time as timestamp FROM forum_api.threads WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
         threads = query_db(query2)
         return jsonify(threads)
 
@@ -234,7 +234,7 @@ def post_forums():
     return response
 
 #POST THREAD
-@app.route('/forums/<int:forum_id>', methods=['POST'])
+@app.route('/forums/<uuid:forum_id>', methods=['POST'])
 @basic_auth.required
 def post_thread(forum_id):
 
