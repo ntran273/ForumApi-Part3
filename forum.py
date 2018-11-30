@@ -38,9 +38,9 @@ basic_auth = Authentication(app)
 #Function Connect Database
 #https://github.com/TerbiumLabs/flask-cassandra/blob/master/flask_cassandra.py
 def get_db():
-    top = _app_ctx_stack.top
-    if not hasattr(top, 'cassandra_cluster'):
-        ctx = top
+    ctx = _app_ctx_stack.top
+    if not hasattr(ctx, 'cassandra_cluster'):
+        # ctx = top
         ctx.cassandra_cluster = cassandra.connect()
         ctx.cassandra_cluster.set_keyspace(DATABASE)
         ctx.cassandra_cluster.row_factory = dict_factory
@@ -171,15 +171,15 @@ def api_forums():
 #List threads in the specified forum
 @app.route('/forums/<uuid:forum_id>', methods = ['GET'])
 def api_threads(forum_id):
-    query = 'SELECT forum_id FROM forums WHERE forum_id = %s' + str(forum_id) +';'
+    query = 'SELECT forum_id FROM forums WHERE forum_id = a8b18bea-02cd-40be-a97a-54926db8c75c ALLOW FILTERING;'
     forum = query_db(query)
     if not forum :
         error = '404 No forum exists with the forum id of ' + str(forum_id)
         return make_response(jsonify({'error': error}), 404)
     else:
         timestamp = getTimeStamp('thread')
-        query = 'SELECT thread_id as Id, username as creator, thread_title as title FROM threads WHERE forum_id = {}'
-        threads = query_db(query)
+        query2 = 'SELECT username, thread_title FROM forum_api.threads WHERE forum_id = a8b18bea-02cd-40be-a97a-54926db8c75c ALLOW FILTERING;'
+        threads = query_db(query2)
         return jsonify(threads)
 
 
