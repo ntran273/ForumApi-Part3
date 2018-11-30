@@ -27,3 +27,18 @@ docker cp schema.cql scylla:/schema.cql
 export FLASK_APP=forum
 flask init_db
 ```
+
+GET FORUMS
+```
+curl localhost:5000/forums
+```
+
+GET threads
+```
+curl localhost:5000/forums/a8b18bea-02cd-40be-a97a-54926db8c75c
+```
+
+POST FORUMS
+```
+curl -v -u holly:password -d '{"forum_name":"HTML"}' -H "Content-Type: application/json" -X POST localhost:5000/forums
+```
