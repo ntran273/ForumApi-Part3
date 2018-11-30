@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS THREADS(
   thread_time timestamp,
   forum_id uuid,
 
-  PRIMARY KEY (username, forum_id, thread_time)
-) with clustering order by (forum_id DESC, thread_time DESC);
+  PRIMARY KEY (username, forum_id, thread_id, thread_time)
+) with clustering order by (forum_id DESC, thread_id DESC, thread_time DESC);
 
 CREATE TABLE IF NOT EXISTS POSTS(
   username text,
