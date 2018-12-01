@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS THREADS(
   forum_id uuid,
 
   PRIMARY KEY (forum_id, thread_time)
-);
+) with clustering order by (thread_time DESC);
 
 CREATE TABLE IF NOT EXISTS POSTS(
   username text,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS POSTS(
   post_id uuid,
 
   PRIMARY KEY ((username, forum_id, thread_id, post_id), post_time)
-);
+) with clustering order by (post_time DESC);
 
 CREATE INDEX user_idx ON users(user_id);
 
