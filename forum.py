@@ -6,6 +6,7 @@ from flask.cli import AppGroup
 from cassandra.cluster import Cluster
 from cassandra.query import dict_factory
 from flask_cassandra import CassandraCluster
+import datetime
 import click
 import sqlite3
 import os
@@ -148,7 +149,7 @@ def change_password(user):
     if not useracc:
        error = '404 No user exists with the user of ' + str(user)
        return make_response(jsonify({'error': error}), 404)
-       
+
     if(creator == str(user)):
         db = get_db()
         db.execute("""update forum_api.users set password = %s where username= %s and user_id in (%s)""",(newpassword, creator, useracc[0]['user_id']))
@@ -219,11 +220,6 @@ def post_forums():
     generateForumId = uuid.uuid4()
     db = get_db()
     db.execute("""insert into forum_api.forums (forum_name, username, forum_id) values (%s, %s, %s)""",(name, creator, generateForumId))
-
-# query = 'SELECT forum_id FROM forum_api.forums WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
-
-    # query = "select forum_id from forum_api.forums where forum_name ='{}'".format(name)
-    # new_forum = query_db(query)
     response = make_response('Success: forum created')
     response.headers['location'] = '/forums/{}'.format(str(generateForumId))
     response.status_code = 201
@@ -251,16 +247,16 @@ def post_thread(forum_id):
     generateThreadId = uuid.uuid4()
 
     db = get_db()
-    db.execute("""insert into forum_api.threads (thread_title, username, forum_id, thread_id) values (%s, %s, %s)""",(text, creator, str(forum_id), generateThreadId))
+    db.execute("""insert into forum_api.threads (thread_title, username, forum_id, thread_time, thread_id) values (%s, %s, %s, toUnixTimestamp((now)), %s)""",(text, creator, str(forum_id), generateThreadId))
 
     # db.execute('insert into threads (thread_title, thread_creator, forum_Id) values (?, ?, ?)',(title, creator, str(forum_id)))
     # Insert text as a new post
-    db.execute("""insert into forum_api.posts (post_text, username, forum_id, thread_id) values (%s, %s, %s, %s)""",(text, creator, str(forum_id), generateThreadId))
+    # db.execute("""insert into forum_api.posts (post_text, username, forum_id, thread_id) values (%s, %s, %s, %s)""",(text, creator, str(forum_id), generateThreadId))
 
     # db.execute('insert into posts (post_text, post_authorid , post_threadId, post_forumid) values (?, ?, ?, ?)',(text, creator, str(thread_id), str(forum_id)))
 
     response = make_response("Success: Thread and Post created")
-    response.headers['location'] = '/forums/{}/{}'.format(str(forum_id), generateThreadId)
+    # response.headers['location'] = '/forums/{}/{}'.format(str(forum_id), generateThreadId)
     response.status_code = 201
     return response
 

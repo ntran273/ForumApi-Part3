@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS THREADS(
   thread_time timestamp,
   forum_id uuid,
 
-  PRIMARY KEY (forum_id, thread_time, thread_id)
+  PRIMARY KEY (forum_id, thread_time)
 );
 
 CREATE TABLE IF NOT EXISTS POSTS(
