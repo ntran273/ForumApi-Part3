@@ -148,12 +148,10 @@ def change_password(user):
     if not useracc:
        error = '404 No user exists with the user of ' + str(user)
        return make_response(jsonify({'error': error}), 404)
- # db.execute('''update message set whom_id = whom_id - { %s } where username = %s and user_id = %s and email = %s and pub_date in (%s)''',
- #  (uuid.UUID(data['whom_id']), data['username'], uuid.UUID(user_id), data['email'], int(current)))
-    # Check if the username is the same with account authenticated
+       
     if(creator == str(user)):
         db = get_db()
-        db.execute("""update forum_api.users set password = %s where username= %s and user_id= %s""",(newpassword, creator, [useracc]))
+        db.execute("""update forum_api.users set password = %s where username= %s and user_id in (%s)""",(newpassword, creator, useracc[0]['user_id']))
         response = make_response("Success: User password Changed")
         response.status_code = 201
         return response
