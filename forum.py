@@ -65,42 +65,6 @@ def initdb_command():
     init_db()
     print('Initialize the database.')
 
-# Function that formats the date
-def getTimeStamp(threadOrPost):
-    timeType = ''
-    if threadOrPost == 'thread':
-        timeType = 'thread_time'
-    else:
-        timeType = 'post_time'
-    # timestamp = "strftime('%m', datetime(thread_time, 'unixepoch')) as month"
-    timestampDay = '''case cast (strftime('%w', {}) as integer)
-        when 0 then 'Sun, '
-        when 1 then 'Mon, '
-        when 2 then 'Tues, '
-        when 3 then 'Wed, '
-        when 4 then 'Thurs, '
-        when 5 then 'Fri, '
-        else 'Sat, ' end'''.format(timeType)
-    timestampDate = "strftime('%d', {})".format(timeType)
-    timestampMonth = '''case cast(strftime('%m', {}) as integer)
-        when 1 then ' Jan '
-        when 2 then ' Feb '
-        when 3 then ' Mar '
-        when 4 then ' Apr '
-        when 5 then ' May '
-        when 6 then ' Jun '
-        when 7 then ' July '
-        when 8 then ' Aug '
-        when 9 then ' Sept '
-        when 10 then ' Oct '
-        when 11 then ' Nov '
-        when 12 then ' Dec '
-        else '' end'''.format(timeType)
-    timestampYear = "strftime('%Y', {})".format(timeType)
-    timestampTime = "strftime('%H:%M:%S', {})".format(timeType)
-    timestamp = '''{} || {} || {} || {} || ' ' ||  {} || ' ' ||'GMT' '''.format(timestampDay, timestampDate, timestampMonth, timestampYear, timestampTime)
-    return timestamp
-
 #Function using for query database
 #Fetch each data one by one based on the query provided
 def query_db(query, args=(), one=False):
@@ -175,7 +139,6 @@ def api_threads(forum_id):
         error = '404 No forum exists with the forum id of ' + str(forum_id)
         return make_response(jsonify({'error': error}), 404)
     else:
-        timestamp = getTimeStamp('thread')
         query2 = 'SELECT thread_id, username as creator, thread_title as title, thread_time as timestamp FROM forum_api.threads WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
         threads = query_db(query2)
         return jsonify(threads)
@@ -197,10 +160,9 @@ def get_post(forum_id, thread_id):
     if not thread:
         error = '404 No thread exists with the thread id of ' + str(thread_id)
         return make_response(jsonify({'error': error}), 404)
-    timestamp = getTimeStamp('post')
     # query2 = 'SELECT thread_id, username as creator, thread_title as title, thread_time as timestamp FROM forum_api.threads WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
 
-    query = "SELECT username as author, post_text as text, post_time as timestamp FROM forum_api.posts WHERE post_threadId = {} AND post_forumid = {}".format(thread_id, forum_id)
+    query = "SELECT username as author, post_text as text, post_time as timestamp FROM forum_api.posts WHERE thread_id = {} AND forum_id = {}".format(thread_id, forum_id)
     post = query_db(query)
     return jsonify(post)
 
