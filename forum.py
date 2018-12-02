@@ -160,7 +160,6 @@ def get_post(forum_id, thread_id):
     if not thread:
         error = '404 No thread exists with the thread id of ' + str(thread_id)
         return make_response(jsonify({'error': error}), 404)
-    # query2 = 'SELECT thread_id, username as creator, thread_title as title, thread_time as timestamp FROM forum_api.threads WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
 
     query = "SELECT username as author, post_text as text, post_time as timestamp FROM forum_api.posts WHERE thread_id = {} AND forum_id = {}".format(thread_id, forum_id)
     post = query_db(query)
@@ -233,10 +232,8 @@ def post_post(forum_id, thread_id):
         return make_response(jsonify({'error': error}), 404)
     # Select from threads on thread_id to make sure thread exists
     query = 'SELECT * FROM forum_api.threads WHERE thread_id = {}'.format(str(thread_id)) + ' ALLOW FILTERING;'
-
-    # query = 'SELECT * FROM threads WHERE id = ' + str(thread_id)
     thread = query_db(query)
-    print(thread)
+
     if len(thread) == 0:
         error = '404 No thread exists with the thread id of ' + str(thread_id)
         return make_response(jsonify({'error': error}), 404)
