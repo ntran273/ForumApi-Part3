@@ -53,6 +53,10 @@ POST THREADS
 curl -v -u holly:password -d '{"thread_title":"Do you love Redis?", "text": "I love it very much"}' -H "Content-Type: application/json" -X POST localhost:5000/forums/a8b18bea-02cd-40be-a97a-54926db8c75c
 ```
 
+POST POST
+```
+curl -v -u holly:password -d '{"thread_title":"Do you love Redis?", "text": "I love it very much"}' -H "Content-Type: application/json" -X POST localhost:5000/forums/a8b18bea-02cd-40be-a97a-54926db8c75c
+```
 
 POST USER
 ```

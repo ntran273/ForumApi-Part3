@@ -245,10 +245,12 @@ def post_post(forum_id, thread_id):
     creator = current_app.config['BASIC_AUTH_USERNAME']
     text = data['text']
 
+    #Generate POST uuid4
+    generatePostId = uuid.uuid4()
+
     # Insert text as a new post
     db = get_db()
-    db.execute('insert into posts (post_text, post_authorid , post_threadId, post_forumid) values (?, ?, ?, ?)',(text, creator, str(thread_id), str(forum_id)))
-    db.commit()
+    db.execute("""insert into forum_api.posts (post_text, username, forum_id, thread_id, post_id, post_time) values (%s, %s, %s, %s, %s, toTimestamp(now()))""",(text, creator, forum_id, thread_id, generatePostId))
 
     response = make_response("Success: Post created")
     response.headers['location'] = '/forums/{}/{}'.format(str(forum_id), thread_id)
