@@ -133,13 +133,13 @@ def api_forums():
 #List threads in the specified forum
 @app.route('/forums/<uuid:forum_id>', methods = ['GET'])
 def api_threads(forum_id):
-    query = 'SELECT forum_id FROM forum_api.forums WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
+    query = 'SELECT forum_id FROM forum_api.forums WHERE forum_id = {}'.format(str(forum_id)) + ';'
     forum = query_db(query)
     if not forum :
         error = '404 No forum exists with the forum id of ' + str(forum_id)
         return make_response(jsonify({'error': error}), 404)
     else:
-        query2 = 'SELECT thread_id, username as creator, thread_title as title, thread_time as timestamp FROM forum_api.threads WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
+        query2 = 'SELECT thread_id, username as creator, thread_title as title, thread_time as timestamp FROM forum_api.threads WHERE forum_id = {}'.format(str(forum_id)) + ';'
         threads = query_db(query2)
         return jsonify(threads)
 
@@ -149,13 +149,13 @@ def api_threads(forum_id):
 def get_post(forum_id, thread_id):
     print(forum_id, thread_id)
      # Select from forums on forum id to make sure that the forum exists
-    query = 'SELECT * FROM forum_api.forums WHERE forum_id = {}'.format(str(forum_id)) + ' ALLOW FILTERING;'
+    query = 'SELECT * FROM forum_api.forums WHERE forum_id = {}'.format(str(forum_id)) + ';'
     forum = query_db(query)
     if not forum:
         error = '404 No forum exists with the forum id of ' + str(forum_id)
         return make_response(jsonify({'error': error}), 404)
     # Select from threads on thread_id to make sure thread exists
-    query = 'SELECT * FROM forum_api.threads WHERE thread_id = {}'.format(str(thread_id)) + ' ALLOW FILTERING;'
+    query = 'SELECT * FROM forum_api.threads WHERE thread_id = {}'.format(str(thread_id)) + ';'
     thread = query_db(query)
     if not thread:
         error = '404 No thread exists with the thread id of ' + str(thread_id)
