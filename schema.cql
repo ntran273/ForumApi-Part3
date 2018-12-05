@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS POSTS(
 
 CREATE INDEX user_idx ON users(user_id);
 CREATE INDEX forums_id_idx on forums(forum_id);
+CREATE INDEX threads_id_idx on threads(thread_id);
 
 insert into forum_api.threads (thread_id, thread_title, username, thread_time, forum_id) values (e8c3c68f-4557-450d-a4ad-f3d20cb50c10, 'Does anyone know how to start Redis?!!!!', 'bob', '2017-04-01T11:21:59.001+0000', a8b18bea-02cd-40be-a97a-54926db8c75c);
 insert into threads (thread_id, thread_title, username, thread_time, forum_id) values (417ef8c4-0bb1-450c-8bbb-e49b7656cbec, 'When is a good time for me to use Redis?', 'charlie', '2017-04-03T11:21:59.001+0000', a8b18bea-02cd-40be-a97a-54926db8c75c);
