@@ -1,4 +1,4 @@
-# FORUM APP PART 3
+﻿# FORUM APP PART 3
 
 IN TUFFIX
 
@@ -55,7 +55,7 @@ curl -v -u holly:password -d '{"thread_title":"Do you love Redis?", "text": "I l
 
 POST POST
 ```
-curl -v -u holly:password -d '{"thread_title":"Do you love Redis?", "text": "I love it very much"}' -H "Content-Type: application/json" -X POST localhost:5000/forums/a8b18bea-02cd-40be-a97a-54926db8c75c
+curl -v -u holly:password -d '{"text":"You can go stackoverflow and post your question"}' -H "Content-Type: application/json" -X POST localhost:5000/forums/a8b18bea-02cd-40be-a97a-54926db8c75c/e8c3c68f-4557-450d-a4ad-f3d20cb50c10
 ```
 
 POST USER
